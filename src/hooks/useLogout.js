@@ -2,31 +2,22 @@ import { useState } from "react";
 import { firebaseAuth } from "../firebase/config";
 import { useAuthContext } from "./useAuthContext";
 
-export const useSignup = () => {
+export const useLogout = () => {
   const { dispatch } = useAuthContext();
+
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
 
-  const signup = async (email, password, displayName) => {
+  const logout = async () => {
     setError(null);
     setIsPending(true);
 
     try {
-      const response = await firebaseAuth.createUserWithEmailAndPassword(
-        email,
-        password
-      );
-      console.log(response.user);
-
-      if (!response) {
-        throw new Error("Could not complete signup");
-      }
-
-      await response.user.updateProfile({ displayName: displayName });
+      const response = await firebaseAuth.signOut();
+      console.log(response);
 
       dispatch({
-        type: "LOGIN",
-        payload: response.user,
+        type: "LOGOUT",
       });
 
       setIsPending(false);
@@ -41,6 +32,6 @@ export const useSignup = () => {
   return {
     error,
     isPending,
-    signup,
+    logout,
   };
 };
