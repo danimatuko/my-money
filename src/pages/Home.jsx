@@ -1,7 +1,16 @@
-import React from "react";
+// styles
+import TransactionForm from "../components/TransactionForm";
+import styles from "../styles/Home.module.css";
 
-const Home = () => {
-  return <h1>Home</h1>;
-};
+// components
 
-export default Home;
+export default function Home() {
+  return (
+    <div className={styles.container}>
+      <div className={styles.content}>transaction list</div>
+      <div className={styles.sidebar}>
+        <TransactionForm />
+      </div>
+    </div>
+  );
+}
