@@ -34,14 +34,12 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = firebaseAuth.onAuthStateChanged((user) => {
-      if (user) {
-        dispatch({
-          type: "AUTH_IS_READY",
-          payload: user,
-        });
+      dispatch({
+        type: "AUTH_IS_READY",
+        payload: user,
+      });
 
-        unsubscribe();
-      }
+      unsubscribe();
     });
   }, []);
 
