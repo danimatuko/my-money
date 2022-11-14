@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import { firestore } from "../firebase/config";
 
-export const useCollection = (collection) => {
+export const useCollection = (collection, query) => {
   const [documents, setDocuments] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const ref = firestore.collection(collection);
+    let ref = firestore.collection(collection);
+
+    if (query) {
+      ref = ref.where(...query);
+    }
 
     const unsubscribe = ref.onSnapshot(
       (snapshot) => {
