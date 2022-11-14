@@ -17,6 +17,14 @@ const firestoreReducer = (state = initialState, action) => {
         document: action.payload,
         success: true,
       };
+    case "DELETE_TRANSACTION":
+      return {
+        ...state,
+        isPending: false,
+        document: null,
+        success: true,
+        error: null,
+      };
     case "ERROR":
       return {
         ...state,
@@ -64,9 +72,25 @@ export const useFireStore = (collection) => {
     }
   };
 
+  const deleteDocument = async (id) => {
+    try {
+      await ref.doc(id).delete();
+      safeDispatch({
+        type: "DELETE_TRANSACTION",
+      });
+      console.log("Document written with ID: ", id);
+    } catch (error) {
+      safeDispatch({
+        type: "ERROR",
+        payload: error,
+      });
+      console.error("Error adding document: ", error);
+    }
+  };
+
   useEffect(() => {
     return () => setIsCancelled(true);
   }, []);
 
-  return { addDocument, response };
+  return { addDocument, deleteDocument, response };
 };
