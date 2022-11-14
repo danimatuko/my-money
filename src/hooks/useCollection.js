@@ -1,20 +1,25 @@
 import { useEffect, useRef, useState } from "react";
 import { firestore } from "../firebase/config";
 
-export const useCollection = (collection, _query) => {
-  const [documents, setDocuments] = useState([]);
+export const useCollection = (collection, _query, _orederBy) => {
+  const [documents, setDocuments] = useState(null);
   const [error, setError] = useState(null);
   /* 
     if we don't use ref it will cause an infinite loop in useEffect
     _query is an array and it's diffrent in every funtion call
   */
   const query = useRef(_query).current;
+  const orederBy = useRef(_orederBy).current;
 
   useEffect(() => {
     let ref = firestore.collection(collection);
 
     if (query) {
       ref = ref.where(...query);
+    }
+
+    if (orederBy) {
+      ref = ref.orderBy(...orederBy);
     }
 
     const unsubscribe = ref.onSnapshot(
@@ -34,7 +39,7 @@ export const useCollection = (collection, _query) => {
     );
     // unsubscribe to unmount
     return () => unsubscribe();
-  }, [collection, query]);
+  }, [collection, query, orederBy]);
 
   return {
     documents,

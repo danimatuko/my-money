@@ -1,5 +1,4 @@
 import React from "react";
-import { useCollection } from "../hooks/useCollection";
 import styles from "../styles/Home.module.css";
 
 const TransactionList = ({ transactions }) => {
