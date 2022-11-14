@@ -4,7 +4,7 @@ Expenses Tracker app
 
 <div align="center">
   <kbd>
-    <img src="https://i.imgur.com/zdY3ZC9.png" />
+    <img src="preview.png" />
   </kbd>
 </div>
 
