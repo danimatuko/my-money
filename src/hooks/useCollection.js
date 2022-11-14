@@ -1,9 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { firestore } from "../firebase/config";
 
-export const useCollection = (collection, query) => {
+export const useCollection = (collection, _query) => {
   const [documents, setDocuments] = useState([]);
   const [error, setError] = useState(null);
+  /* 
+    if we don't use ref it will cause an infinite loop in useEffect
+    _query is an array and it's diffrent in every funtion call
+  */
+  const query = useRef(_query).current;
 
   useEffect(() => {
     let ref = firestore.collection(collection);
@@ -29,7 +34,7 @@ export const useCollection = (collection, query) => {
     );
     // unsubscribe to unmount
     return () => unsubscribe();
-  }, [collection]);
+  }, [collection, query]);
 
   return {
     documents,
